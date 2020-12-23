@@ -54,7 +54,7 @@ public class MainCommandsProcessor implements CommandsProcessor {
             case 4:
                 System.out.println("Enter genres (drama,melodrama...)");
                 String genres = scanner.nextLine();
-                MovieService.printAllFilmsByGenre(MovieCache.getCache(), StringUtils.mapStringToSetOfGenres(genres));
+                MovieService.printAllFilmsByGenre(MovieCache.getCache(), StringUtils.mapStringToGenreSet(genres));
                 break;
             case 5:
                 MovieService.sortAndPrintAllAwardWinningFilms(MovieCache.getCache());

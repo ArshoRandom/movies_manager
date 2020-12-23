@@ -4,6 +4,8 @@ import models.movies.constants.Genre;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
@@ -29,19 +31,6 @@ public class StringUtils {
         return "";
     }
 
-    public static Set<Genre> mapStringToSetOfGenres(String genres){
-        Set<Genre> genreSet;
-        if (genres.contains(",")){
-            genreSet = new HashSet<>();
-            String[] tokens = genres.split(",");
-            for (String genreToken : tokens){
-                genreSet.add(getGenreByStr(genreToken));
-            }
-        }else {
-            genreSet = Collections.singleton(getGenreByStr(genres));
-        }
-        return genreSet;
-    }
 
     public static Genre getGenreByStr(String gv) {
         gv = gv.trim().toUpperCase();
@@ -72,44 +61,43 @@ public class StringUtils {
     }
 
     public static Set<Genre> mapStringToGenreSet(String formattedData){
-        if (formattedData.startsWith("[")){
-            formattedData = formattedData.replace("[","").replace("]","");
+        Pattern genresRegexp = Pattern.compile("[a-zA-Z]+");
+        Matcher genresMatcher = genresRegexp.matcher(formattedData);
+        Set<Genre> genres = new HashSet<>();
+        while (genresMatcher.find()){
+            genres.add(getGenreByStr(genresMatcher.group()));
         }
-        StringTokenizer tokenizer = new StringTokenizer(formattedData,",");
-        Set<Genre> genreSet = new HashSet<>(7); // possible maximum size
-        String genreStr;
-        while (tokenizer.hasMoreElements()){
-            genreStr = tokenizer.nextToken().trim();
-            genreSet.add(getGenreByStr(genreStr));
-        }
-        return genreSet;
+        return genres;
     }
 
     public static Map<String, Set<Integer>> mapStringToAwardMap(String strMap){
         Map<String, Set<Integer>> map = new HashMap<>();
-        strMap = strMap.replace("{","").replace("}","");
-        String[] tokens = strMap.split("]");
-        for (String tk : tokens){
-            String[] awardAndValue = tk.split("=");
-            String award = awardAndValue[0];
-            if (award.startsWith(",")){
-                award = award.replace(",","").trim();
+
+        Pattern entryRegexp = Pattern.compile("[a-zA-Z\\s]+\\s?=\\s?\\[(\\d{4}\\s?,?\\s?)+]");
+        Matcher entryMatcher = entryRegexp.matcher(strMap);
+
+        Pattern awardsRegexp = Pattern.compile("[a-zA-Z\\s]+");
+        Matcher awardMatcher;
+
+        Pattern yearsRegexp = Pattern.compile("\\d{4}");
+        Matcher yearsMatcher;
+        Set<Integer> years;
+
+        while (entryMatcher.find()){
+            String entry = entryMatcher.group();
+            awardMatcher = awardsRegexp.matcher(entry);
+            yearsMatcher = yearsRegexp.matcher(entry);
+            if (awardMatcher.find()){
+                years = new TreeSet<>();
+                while (yearsMatcher.find()){
+                    years.add(Integer.parseInt(yearsMatcher.group().trim()));
+                }
+                map.put(awardMatcher.group().trim(),years);
             }
-            Set<Integer> years = mapStringToIntSet(awardAndValue[1]);
-            map.put(award,years);
         }
         return map;
     }
 
-    public static Set<Integer> mapStringToIntSet(String strSet){
-        strSet = strSet.replace("[","").replace("]","");
-        Set<Integer> set = new HashSet<>();
-        StringTokenizer tokenizer = new StringTokenizer(strSet,",");
-        while (tokenizer.hasMoreElements()){
-            set.add(Integer.parseInt(tokenizer.nextToken().trim()));
-        }
-        return set;
-    }
 
     public static String formatDateToString(Date premiereDate){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
