@@ -57,11 +57,13 @@ public class MovieService {
     }
 
     public static void printAllFilmsByAgeRestriction(Set<? extends AbstractMovie> movieCollection, int age) {
+        ColorChanger.changeColor(Color.PURPLE);
         for (AbstractMovie movie : movieCollection) {
-            if (movie.getAgeRestriction() >= age) {
+            if (movie.getAgeRestriction() <= age) {
                 movie.printInfo();
             }
         }
+        ColorChanger.changeColor(Color.GREEN);
     }
 
     public static <T extends AbstractMovie> void printFilmAwards(T movie) {

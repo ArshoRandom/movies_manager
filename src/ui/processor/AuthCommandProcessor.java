@@ -3,22 +3,21 @@ package ui.processor;
 import auth.Login;
 import auth.Register;
 import exceptions.InvalidCommandException;
-import exceptions.InvalidPropertyException;
 import exceptions.ModelNotFoundException;
 import models.user.User;
+import util.ScannerReader;
 import util.color.Color;
 import util.color.ColorChanger;
 import util.validators.ValidatorUtils;
 
-import java.util.Scanner;
 
 public class AuthCommandProcessor implements CommandsProcessor {
 
 
-    private Scanner scanner;
+    private ScannerReader scanner;
 
-    public AuthCommandProcessor(Scanner scanner) {
-        this.scanner = scanner;
+    public AuthCommandProcessor() {
+        this.scanner = ScannerReader.getInstance();
     }
 
     @Override
@@ -33,24 +32,18 @@ public class AuthCommandProcessor implements CommandsProcessor {
         String password;
         switch (commandNumber) {
             case 1:
-                System.out.println("Enter username");
-                username = scanner.nextLine();
-                System.out.println("Enter password");
-                password = scanner.nextLine();
+                username = scanner.readLine("Enter username");
+                password = scanner.readLine("Enter password");
                 Login.login(username, password);
                 ColorChanger.changeColor(Color.GREEN);
                 break;
             case 2:
-                System.out.println("Enter username");
-                username = scanner.nextLine();
-                System.out.println("Enter password");
-                password = scanner.nextLine();
-                System.out.println("Enter name");
-                String name = scanner.nextLine();
-                System.out.println("Enter surname");
-                String surname = scanner.nextLine();
-                System.out.println("Enter email");
-                String email = scanner.nextLine();
+                System.out.println();
+                username = scanner.readLine("Enter username");
+                password = scanner.readLine("Enter password");
+                String name = scanner.readLine("Enter name");
+                String surname = scanner.readLine("Enter surname");
+                String email = scanner.readLine("Enter email");
                 ValidatorUtils.validateProperties(name,surname,username,email,password);
                 User user = new User.Builder()
                         .setUsername(username)
@@ -59,7 +52,6 @@ public class AuthCommandProcessor implements CommandsProcessor {
                         .setSurname(surname)
                         .setName(name).build();
                 Register.register(user);
-
                 break;
             default:
                 throw new InvalidCommandException(command);

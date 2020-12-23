@@ -5,6 +5,7 @@ import exceptions.InvalidPropertyException;
 import exceptions.ModelNotFoundException;
 import ui.processor.AuthCommandProcessor;
 import ui.processor.MainCommandsProcessor;
+import util.ScannerReader;
 import util.cache.MovieCache;
 import util.cache.UserCache;
 import util.color.Color;
@@ -12,7 +13,6 @@ import util.color.ColorChanger;
 import util.io.impl.MovieDataWriter;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class UI {
 
@@ -24,14 +24,13 @@ public class UI {
     public static void start() {
         System.out.println(Templates.getWelcomeTemplate());
 
-        Scanner scanner = new Scanner(System.in);
+        ScannerReader scanner = ScannerReader.getInstance();
 
-        AuthCommandProcessor authProcessor = new AuthCommandProcessor(scanner);
-        MainCommandsProcessor movieProcessor = new MainCommandsProcessor(scanner);
+        AuthCommandProcessor authProcessor = new AuthCommandProcessor();
+        MainCommandsProcessor movieProcessor = new MainCommandsProcessor();
 
         while (true) {
-            System.out.println(Templates.getAuthTemplate());
-            String authCommand = scanner.nextLine();
+            String authCommand = scanner.readLine(Templates.getAuthTemplate());
             try {
                 authProcessor.processMainCommands(authCommand);
             } catch (InvalidCommandException | ModelNotFoundException | InvalidPropertyException e) {
@@ -51,13 +50,11 @@ public class UI {
         while (inAction) {
 
             ColorChanger.changeColor(Color.GREEN);
-            System.out.println(menuTemplate);
-            String command = scanner.nextLine();
+            String command = scanner.readLine(menuTemplate);
 
             switch (command.toLowerCase()) {
                 case "exit":
-                    System.out.println("Do yo want save your movies? (Y/N)");
-                    String action = scanner.nextLine();
+                    String action = scanner.readLine("Do yo want save your movies? (Y/N)");
                     if (action.equalsIgnoreCase("y")){
                         try {
                             movieDataWriter.write(MovieCache.getCache(),String.format("src/resources/%s.txt", UserCache.getCurrentUser().getUsername()));

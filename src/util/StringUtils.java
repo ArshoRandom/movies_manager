@@ -104,4 +104,18 @@ public class StringUtils {
         return dateFormat.format(premiereDate);
     }
 
+    public static Map<String,String> propertyArrayToMap(String... array){
+        Map<String,String> properties = new HashMap<>(array.length);
+        properties.put("title",array[0]);
+        properties.put("country",array[1]);
+        properties.put("ageRestriction",array[2]);
+        properties.put("genre",array[3]);
+        properties.put("premiereDate",array[4]);
+        properties.put("awardMap",array[5]);
+        if (array.length > 6) {
+            properties.put("optional", array[6]);
+        }
+        return properties;
+    }
+
 }

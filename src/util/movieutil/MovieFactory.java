@@ -1,4 +1,4 @@
-package util.moviefactory;
+package util.movieutil;
 
 import models.movies.Animation;
 import models.movies.FeatureFilm;
@@ -15,64 +15,70 @@ import java.util.Set;
 
 public class MovieFactory {
 
-    public static <T extends AbstractMovie> T createMovie(MovieType type, String...properties){
-        ValidatorUtils.validateMovieCreatorCountry(properties[1]);
-        ValidatorUtils.validateMoviePremierDate(properties[4]);
-        ValidatorUtils.validateAwardYear(properties[4],properties[5]);
+    public static <T extends AbstractMovie> T createMovie(MovieType type, Map<String,String> properties){
+        String title = properties.get("title");
+        String country = properties.get("country");
+        String premiereDate = properties.get("premiereDate");
+        int ageRestriction = Integer.parseInt(properties.get("ageRestriction"));;
+        String genre = properties.get("genre");;
+        Map<String, Set<Integer>> awardMap = StringUtils.mapStringToAwardMap(properties.get("awardMap"));;
 
-        int ageRestriction = Integer.parseInt(properties[2]);
-        Set<Genre> genres = StringUtils.mapStringToGenreSet(properties[3]);
-        Map<String, Set<Integer>> awardMap = StringUtils.mapStringToAwardMap(properties[5]);
+        ValidatorUtils.isEmpty(title,"title");
+        ValidatorUtils.isEmpty(genre,"genre");
+        ValidatorUtils.validateMovieCreatorCountry(country);
+        ValidatorUtils.validateMoviePremierDate(premiereDate);
+        ValidatorUtils.validateAwardYear(premiereDate,properties.get("awardMap"));
+        Set<Genre> genres = StringUtils.mapStringToGenreSet(genre);
+
 
         switch (type){
             case SOAP_OPERA:
                 ValidatorUtils.validateAgeRestriction(ageRestriction);
                 SoapOpera soapOpera = new SoapOpera();
-                soapOpera.setTitle(properties[0]);
-                soapOpera.setCountry(properties[1]);
+                soapOpera.setTitle(title);
+                soapOpera.setCountry(country);
                 soapOpera.setAgeRestriction(ageRestriction);
                 soapOpera.setGenre(genres);
-                soapOpera.setPremiereDate(properties[4]);
+                soapOpera.setPremiereDate(premiereDate);
                 soapOpera.setAwardMap(awardMap);
-                soapOpera.setSeriesCount(Integer.parseInt(properties[6]));
+                soapOpera.setSeriesCount(Integer.parseInt(properties.get("optional")));
                 return (T) soapOpera;
             case ANIMATION:
                 ValidatorUtils.validateAnimationAgeRestriction(ageRestriction);
                 Animation animation = new Animation();
-                animation.setTitle(properties[0]);
-                animation.setCountry(properties[1]);
+                animation.setTitle(title);
+                animation.setCountry(country);
                 animation.setAgeRestriction(ageRestriction);
                 animation.setGenre(genres);
-                animation.setPremiereDate(properties[4]);
+                animation.setPremiereDate(premiereDate);
                 animation.setAwardMap(awardMap);
-                animation.setDrawn(Boolean.parseBoolean(properties[6]));
+                animation.setDrawn(Boolean.parseBoolean(properties.get("optional")));
                 return (T) animation;
             case MUSIC_FILM:
+                String mainMusic = properties.get("optional");
                 ValidatorUtils.validateAgeRestriction(ageRestriction);
+                ValidatorUtils.validateMovieMainMusic(mainMusic);
                 MusicFilm musicFilm = new MusicFilm();
-                musicFilm.setTitle(properties[0]);
-                musicFilm.setCountry(properties[1]);
+                musicFilm.setTitle(title);
+                musicFilm.setCountry(country);
                 musicFilm.setAgeRestriction(ageRestriction);
                 musicFilm.setGenre(genres);
-                musicFilm.setPremiereDate(properties[4]);
+                musicFilm.setPremiereDate(premiereDate);
                 musicFilm.setAwardMap(awardMap);
-                musicFilm.setMainMusic(properties[6]);
+                musicFilm.setMainMusic(mainMusic);
                 return (T) musicFilm;
             case FEATURE_FILM:
                 ValidatorUtils.validateAgeRestriction(ageRestriction);
                 FeatureFilm featureFilm = new FeatureFilm();
-                featureFilm.setTitle(properties[0]);
-                featureFilm.setCountry(properties[1]);
+                featureFilm.setTitle(title);
+                featureFilm.setCountry(country);
                 featureFilm.setAgeRestriction(ageRestriction);
                 featureFilm.setGenre(genres);
-                featureFilm.setPremiereDate(properties[4]);
+                featureFilm.setPremiereDate(premiereDate);
                 featureFilm.setAwardMap(awardMap);
                 return (T) featureFilm;
             default:
                 throw new RuntimeException("Invalid type : " + type);
-
         }
-
     }
-
 }

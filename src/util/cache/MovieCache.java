@@ -1,6 +1,7 @@
 package util.cache;
 
 import models.movies.base.AbstractMovie;
+import util.ScannerReader;
 import util.helpers.KeyPair;
 
 import java.util.*;
@@ -13,10 +14,20 @@ public class MovieCache {
     private MovieCache(){}
 
     public static void cache(AbstractMovie movie){
+
         if (cache == null){
             cache = new WeakHashMap<>();
         }
-        cache.put(new KeyPair<>(movie.getTitle().toLowerCase(), movie.getCountry().toLowerCase()),movie);
+        KeyPair<String,String> keyPair = new KeyPair<>(movie.getTitle().toLowerCase(),movie.getCountry().toLowerCase());
+        if (cache.containsKey(keyPair)){
+            String answer = ScannerReader.getInstance().readLine("Movie already exists. Update ? (Y/N)");
+            if (answer.equalsIgnoreCase("y")){
+               cache.put(keyPair,movie);
+            }else if (!answer.equalsIgnoreCase("n")){
+                return;
+            }
+        }
+        cache.put(keyPair, movie);
     }
 
     public static void setCache(Map<KeyPair, AbstractMovie> movieMap){

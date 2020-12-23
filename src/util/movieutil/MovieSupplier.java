@@ -1,4 +1,4 @@
-package util.moviefactory;
+package util.movieutil;
 
 import exceptions.InvalidPropertyException;
 import models.movies.Animation;
@@ -7,9 +7,8 @@ import models.movies.MusicFilm;
 import models.movies.SoapOpera;
 import models.movies.base.Movie;
 import models.movies.constants.MovieType;
-import util.validators.ValidatorUtils;
-
-import java.util.Scanner;
+import util.ScannerReader;
+import util.StringUtils;
 
 public class MovieSupplier {
 
@@ -39,7 +38,7 @@ public class MovieSupplier {
 
     private static MusicFilm getMusicFilm() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.MUSIC_FILM);
-        MusicFilm musicFilm = MovieFactory.createMovie(MovieType.MUSIC_FILM, title, country, ageRestriction, genre, premiereDate, awardMap, mainMusic);
+        MusicFilm musicFilm = MovieFactory.createMovie(MovieType.MUSIC_FILM, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap, mainMusic));
         FieldsFiller.clean();
         return musicFilm;
 
@@ -47,30 +46,32 @@ public class MovieSupplier {
 
     private static Animation getAnimation() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.ANIMATION);
-        Animation animation = MovieFactory.createMovie(MovieType.ANIMATION, title, country, ageRestriction, genre, premiereDate, awardMap, isDrawn);
+        Animation animation = MovieFactory.createMovie(MovieType.ANIMATION, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap, isDrawn));
         FieldsFiller.clean();
         return animation;
     }
 
     private static FeatureFilm getFeatureFilm() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.FEATURE_FILM);
-        FeatureFilm featureFilm = MovieFactory.createMovie(MovieType.FEATURE_FILM, title, country, ageRestriction, genre, premiereDate, awardMap);
+        FeatureFilm featureFilm = MovieFactory.createMovie(MovieType.FEATURE_FILM, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap));
         FieldsFiller.clean();
         return featureFilm;
     }
 
     private static SoapOpera getSoapOpera() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.SOAP_OPERA);
-        SoapOpera soapOpera = MovieFactory.createMovie(MovieType.SOAP_OPERA, title, country, ageRestriction, genre, premiereDate, awardMap, seriesCount);
+        SoapOpera soapOpera = MovieFactory.createMovie(MovieType.SOAP_OPERA, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap, seriesCount));
         FieldsFiller.clean();
         return soapOpera;
     }
 
+
+
     private static class FieldsFiller {
-        private static Scanner scanner;
+        private static ScannerReader scanner;
 
         static {
-            scanner = new Scanner(System.in);
+            scanner = ScannerReader.getInstance();
         }
 
         public static void fillFieldsAndGetValues(MovieType movieType) throws InvalidPropertyException {
@@ -94,20 +95,18 @@ public class MovieSupplier {
 
         private static void getValuesForMusicFilm() {
             getValuesForBaseMovie();
-            System.out.println("Enter main music");
-            MovieSupplier.mainMusic = scanner.nextLine();
+            MovieSupplier.mainMusic = scanner.readLine("Enter main music");
+
         }
 
         private static void getValuesForAnimation() {
             getValuesForBaseMovie();
-            System.out.println("Enter true if it is drawn, otherwise false");
-            MovieSupplier.isDrawn = scanner.nextLine();
+            MovieSupplier.isDrawn = scanner.readLine("Enter true if it is drawn, otherwise false");
         }
 
         private static void getValuesForSoapOpera() {
             getValuesForBaseMovie();
-            System.out.println("Enter count of series");
-            MovieSupplier.seriesCount = scanner.nextLine();
+            MovieSupplier.seriesCount = scanner.readLine("Enter count of series");
         }
 
         private static void getValuesForFeatureFilm() {
@@ -115,18 +114,12 @@ public class MovieSupplier {
         }
 
         private static void getValuesForBaseMovie() {
-            System.out.println("Enter title");
-            MovieSupplier.title = scanner.nextLine();
-            System.out.println("Enter country");
-            MovieSupplier.country = scanner.nextLine();
-            System.out.println("Enter genre (drama,melodrama)");
-            MovieSupplier.genre = scanner.nextLine();
-            System.out.println("Enter premier date (example 21.05.2001)");
-            MovieSupplier.premiereDate = scanner.nextLine();
-            System.out.println("Enter age of restriction");
-            MovieSupplier.ageRestriction = scanner.nextLine();
-            System.out.println("Enter awards (example oscar=[2002, 2004], golden globe=[1998, 1999])");
-            MovieSupplier.awardMap = scanner.nextLine();
+            MovieSupplier.title = scanner.readLine("Enter title");
+            MovieSupplier.country = scanner.readLine("Enter country");
+            MovieSupplier.genre = scanner.readLine("Enter genre (example drama,melodrama...)");
+            MovieSupplier.premiereDate = scanner.readLine("Enter premier date (example 21.05.2001)");
+            MovieSupplier.ageRestriction = scanner.readLine("Enter age of restriction");
+            MovieSupplier.awardMap = scanner.readLine("Enter awards (example oscar=[2002, 2004], golden globe=[1998, 1999]...)");
         }
 
         private static void clean() {

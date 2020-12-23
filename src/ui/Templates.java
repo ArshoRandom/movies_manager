@@ -5,14 +5,14 @@ import util.color.ColorChanger;
 
 public class Templates {
 
-    public static String getAuthTemplate(){
+    public static String getAuthTemplate() {
         ColorChanger.changeColor(Color.GREEN);
-        return "\nAuthentication"+
-               "\n1. Login"+
-               "\n2. Register";
+        return "\nAuthentication" +
+                "\n1. Login" +
+                "\n2. Register";
     }
 
-    public static String  getWelcomeTemplate(){
+    public static String getWelcomeTemplate() {
         ColorChanger.changeColor(Color.BLUE);
         return ("\nWelcome to my MovieManager application, for exit enter 'exit'" +
                 "\nFor executing command enter command number." +
@@ -21,9 +21,9 @@ public class Templates {
                 "\nGood luck!!!");
     }
 
-    public static String getMainMenuTemplate(){
+    public static String getMainMenuTemplate() {
         ColorChanger.changeColor(Color.GREEN);
-        return  "\n1. Add movie" +
+        return "\n1. Add movie" +
                 "\n2. Print all movies" +
                 "\n3. Print all movies by age" +
                 "\n4. Print all movies by genre" +
@@ -33,23 +33,22 @@ public class Templates {
                 "\n8. Individual actions with movies";
     }
 
-    public static String getSubMenuTemplate(){
+    public static String getSubMenuTemplate() {
         ColorChanger.changeColor(Color.GREEN);
-        return  "\n1. Print movie info" +
+        return "\n1. Print movie info" +
                 "\n2. Print movie awards" +
                 "\n3. Print movie age" +
                 "\n4. Print movie rating" +
                 "\n5. Back to main menu";
     }
 
-    public static void printMovieTypeMenu(){
+    public static String getMovieTypeMenu() {
         ColorChanger.changeColor(Color.YELLOW);
-        System.out.println("Choose movie type number");
-        System.out.println(
+        return "Choose movie type number\n" +
                 "\n1. Feature film" +
-                        "\n2. Animation" +
-                        "\n3. Music film" +
-                        "\n4. Soap opera" +
-                        "\n5. Back to main menu");
+                "\n2. Animation" +
+                "\n3. Music film" +
+                "\n4. Soap opera" +
+                "\n5. Back to main menu";
     }
 }

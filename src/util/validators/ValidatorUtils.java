@@ -1,6 +1,7 @@
 package util.validators;
 
 import exceptions.InvalidPropertyException;
+import util.StringUtils;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -83,10 +84,15 @@ public class ValidatorUtils {
     }
 
     public static void validateMovieCreatorCountry(String data){
+        InvalidPropertyException.check((data.trim().isEmpty()),"country could not be empty");
         char[] symbols = data.toCharArray();
         for (char symbol : symbols) {
             InvalidPropertyException.check(!Character.isLetter(symbol), "country name must consist of letter");
         }
+    }
+
+    public static void validateMovieMainMusic(String data){
+        InvalidPropertyException.check(data.trim().length() >= 3,"main music must be contains 3 or more characters");
     }
 
     public static void validateAgeRestriction(int ageRestriction){
@@ -97,5 +103,11 @@ public class ValidatorUtils {
     }
 
 
+    public static void isEmpty(String data, String propName) {
+        InvalidPropertyException.check((data.trim().isEmpty()),propName + " could not be empty");
+    }
 
+    public static void validateMovieTitle(String data) {
+        InvalidPropertyException.check((data.trim().isEmpty()),"title could not be empty");
+    }
 }
