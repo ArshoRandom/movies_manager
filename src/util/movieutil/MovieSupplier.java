@@ -22,6 +22,8 @@ public class MovieSupplier {
     private static String isDrawn;
     private static String mainMusic;
 
+    private MovieSupplier(){}
+
     public static <T extends Movie> T getMovieByType(MovieType type) {
         switch (type) {
             case FEATURE_FILM:

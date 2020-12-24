@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 
 public class ValidatorUtils {
 
+    private ValidatorUtils(){}
+
     private static boolean isValidEmail(String email) {
         Pattern emailRegexp =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);

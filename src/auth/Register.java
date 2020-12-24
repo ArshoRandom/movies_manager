@@ -1,5 +1,6 @@
 package auth;
 
+import config.AppConfig;
 import models.user.User;
 import util.cache.UserCache;
 import util.io.impl.UserDataReader;
@@ -12,22 +13,22 @@ import java.util.List;
 
 public class Register {
 
-    private static final String PATH = "src/resources/users.txt";
+    private Register(){}
 
     public static void register(User user) {
         checkDuplicate(user.getUsername());
         UserDataWriter writer = new UserDataWriter();
         try {
             UserCache.setCurrentUser(user);
-            writer.write(Collections.singleton(user), PATH);
+            writer.write(Collections.singleton(user), AppConfig.userDataPath);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     private static void checkDuplicate(String username) {
         UserDataReader reader = new UserDataReader();
-        File file = new File(PATH);
+        File file = new File(AppConfig.userDataPath);
         if (file.exists()) {
             try {
                 List<String> list = reader.read(file.getPath());

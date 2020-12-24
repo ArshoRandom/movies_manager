@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
+    private StringUtils(){}
+
     public static String capitalize(String str) {
         str = str.trim();
         if (str.contains(" ")) {

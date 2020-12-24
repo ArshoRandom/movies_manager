@@ -1,5 +1,6 @@
 package ui;
 
+import config.AppConfig;
 import exceptions.InvalidCommandException;
 import exceptions.InvalidPropertyException;
 import exceptions.ModelNotFoundException;
@@ -15,6 +16,8 @@ import util.io.impl.MovieDataWriter;
 import java.io.IOException;
 
 public class UI {
+
+    private UI(){}
 
     private static MovieDataWriter movieDataWriter;
     static {
@@ -57,7 +60,7 @@ public class UI {
                     String action = questionnaire.askQuestion("Do yo want save your movies? (Y/N)");
                     if (action.equalsIgnoreCase("y")){
                         try {
-                            movieDataWriter.write(MovieCache.getCache(),String.format("src/resources/%s.txt", UserCache.getCurrentUser().getUsername()));
+                            movieDataWriter.write(MovieCache.getCache(), AppConfig.getMoviesDataPathFor(UserCache.getCurrentUser().getUsername()));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

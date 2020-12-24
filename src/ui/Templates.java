@@ -5,6 +5,8 @@ import util.color.ColorChanger;
 
 public class Templates {
 
+    private Templates(){}
+
     public static String getAuthTemplate() {
         ColorChanger.changeColor(Color.GREEN);
         return "\nAuthentication" +

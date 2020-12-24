@@ -6,6 +6,8 @@ import util.color.ColorChanger;
 
 public class UserService {
 
+    private UserService(){}
+
     public static void printUserInfo(User user) {
         ColorChanger.changeColor(Color.PURPLE);
 

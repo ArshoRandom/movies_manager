@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class DigestUtils {
 
+    private DigestUtils(){}
+
     public static String md5(String message) {
         StringBuffer sb = new StringBuffer();
         MessageDigest md;

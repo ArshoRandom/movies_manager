@@ -12,6 +12,8 @@ import java.util.*;
 
 public class MovieService {
 
+    private MovieService(){}
+
     public static void printAllFilms(Set<? extends AbstractMovie> moviesCollection) {
         ColorChanger.changeColor(Color.PURPLE);
         for (AbstractMovie movie : moviesCollection) {

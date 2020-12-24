@@ -15,6 +15,8 @@ import java.util.Set;
 
 public class MovieFactory {
 
+    private MovieFactory(){}
+
     public static <T extends AbstractMovie> T createMovie(MovieType type, Map<String,String> properties){
         String title = properties.get("title");
         String country = properties.get("country");

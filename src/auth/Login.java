@@ -1,6 +1,6 @@
 package auth;
 
-import exceptions.InvalidDataFormatException;
+import config.AppConfig;
 import exceptions.ModelNotFoundException;
 import models.movies.base.AbstractMovie;
 import models.user.User;
@@ -23,10 +23,12 @@ import java.util.Objects;
 
 public class Login {
 
+    private Login(){}
+
     public static void login(String username, String password) throws ModelNotFoundException {
         UserDataReader reader = new UserDataReader();
         try {
-            List<String> read = reader.read("src/resources/users.txt");
+            List<String> read = reader.read(AppConfig.userDataPath);
             UserMapper mapper = new UserMapper();
             Map<KeyPair, User> userMap = mapper.map(read);
             User user = userMap.get(new KeyPair<>(username, DigestUtils.md5(password)));
@@ -45,7 +47,7 @@ public class Login {
     private static void loadUserMovies(String username) throws IOException {
         MovieDataReader reader = new MovieDataReader();
         Mapper<KeyPair, AbstractMovie> movieMapper = new MovieMapper();
-        File file = new File(String.format("src/resources/%s.txt", username));
+        File file = new File(AppConfig.getMoviesDataPathFor(username));
         if (file.exists()) {
 
             Map<KeyPair, AbstractMovie> movieMap = movieMapper.map(reader.read(file.getPath()));
