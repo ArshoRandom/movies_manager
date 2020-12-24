@@ -3,6 +3,7 @@ package ui.processor;
 import exceptions.InvalidCommandException;
 import exceptions.ModelNotFoundException;
 import models.movies.base.AbstractMovie;
+import models.movies.constants.MovieType;
 import services.MovieService;
 import services.UserService;
 import ui.Templates;
@@ -13,7 +14,6 @@ import util.cache.UserCache;
 import util.color.Color;
 import util.color.ColorChanger;
 import util.movieutil.MovieSupplier;
-import models.movies.constants.MovieType;
 
 
 public class MainCommandsProcessor implements CommandsProcessor {
@@ -47,7 +47,7 @@ public class MainCommandsProcessor implements CommandsProcessor {
                 break;
             case 3:
                 int age = Integer.parseInt(questionnaire.askQuestion("Enter age"));
-                MovieService.printAllFilmsByAgeRestriction(MovieCache.getCache(),age);
+                MovieService.printAllFilmsByAgeRestriction(MovieCache.getCache(), age);
                 break;
             case 4:
                 String genres = questionnaire.askQuestion("Enter genres (drama,melodrama...)");
@@ -94,7 +94,7 @@ public class MainCommandsProcessor implements CommandsProcessor {
     }
 
 
-    public  void processSubCommands(String command) throws InvalidCommandException, NumberFormatException {
+    public void processSubCommands(String command) throws InvalidCommandException, NumberFormatException {
         int commandNumber = Integer.parseInt(command.trim());
         if (!(commandNumber > 0 && commandNumber < 6)) {
             throw new InvalidCommandException(String.valueOf(commandNumber));
@@ -122,12 +122,12 @@ public class MainCommandsProcessor implements CommandsProcessor {
         }
     }
 
-    private  class Question{
+    private class Question {
 
-        private  <T extends AbstractMovie> T  getMovieByQuestion() throws ModelNotFoundException {
+        private <T extends AbstractMovie> T getMovieByQuestion() throws ModelNotFoundException {
             String title = questionnaire.askQuestion("Enter movie name");
             String country = questionnaire.askQuestion("Enter movie country");
-            return MovieService.search(title,country);
+            return MovieService.search(title, country);
         }
     }
 }

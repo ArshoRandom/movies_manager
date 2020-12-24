@@ -1,12 +1,14 @@
 package models.movies.base;
 
-import exceptions.InvalidPropertyException;
-import util.StringUtils;
-import models.movies.constants.MovieType;
 import models.movies.constants.Genre;
+import models.movies.constants.MovieType;
+import util.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractMovie implements Movie {
 

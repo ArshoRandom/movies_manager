@@ -53,7 +53,12 @@ public class ValidatorUtils {
     }
 
     private static boolean isValidUsername(String username) {
-        return username.length() > 10;
+        if (username.trim().length() < 10) {
+            return false;
+        }
+        Pattern usernameRegexp = Pattern.compile("\\w+",Pattern.CASE_INSENSITIVE);
+        Matcher matcher = usernameRegexp.matcher(username);
+        return matcher.matches();
     }
 
     public static void validateProperties(String name, String surname, String username, String email, String password) {
