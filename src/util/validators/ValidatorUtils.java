@@ -1,6 +1,7 @@
 package util.validators;
 
 import exceptions.InvalidPropertyException;
+import exceptions.InvalidUserDataException;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -37,18 +38,18 @@ public class ValidatorUtils {
 
     private static boolean isValidPersonalData(String data) {
         if (data.trim().length() <= 1) {
-            return true;
-        }
-        char[] symbols = data.toCharArray();
-        if (Character.isLetter(symbols[0]) && Character.isUpperCase(symbols[0])) {
-            for (int i = 1; i < symbols.length; i++) {
-                if (!Character.isLetter(symbols[i]) && Character.isUpperCase(symbols[i])) {
-                    return true;
-                }
-            }
             return false;
         }
-        return true;
+        char[] symbols = data.trim().toCharArray();
+        if (Character.isLetter(symbols[0]) && Character.isUpperCase(symbols[0])) {
+            for (int i = 1; i < symbols.length; i++) {
+                if (!Character.isLetter(symbols[i]) || Character.isUpperCase(symbols[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     private static boolean isValidUsername(String username) {
@@ -56,11 +57,11 @@ public class ValidatorUtils {
     }
 
     public static void validateProperties(String name, String surname, String username, String email, String password) {
-        InvalidPropertyException.check(isValidPersonalData(name), name + " : name must be starts with uppercase and must have length greater than 1");
-        InvalidPropertyException.check(isValidPersonalData(surname), surname + " : surname must be starts with uppercase and must have length greater than 1");
-        InvalidPropertyException.check(!isValidUsername(username), username + " : username must have length greater than 10");
-        InvalidPropertyException.check(!isValidEmail(email), email + " : invalid email format");
-        InvalidPropertyException.check(!isValidPassword(password), "password must contain 2 or more uppercase letter and 3 or more numbers");
+        InvalidUserDataException.check(!isValidPersonalData(name), name + " : name must be starts with uppercase and must have length greater than 1");
+        InvalidUserDataException.check(!isValidPersonalData(surname), surname + " : surname must be starts with uppercase and must have length greater than 1");
+        InvalidUserDataException.check(!isValidUsername(username), username + " : username must have length greater than 10");
+        InvalidUserDataException.check(!isValidEmail(email), email + " : invalid email format");
+        InvalidUserDataException.check(!isValidPassword(password), "password must contain 2 or more uppercase letter and 3 or more numbers");
     }
 
     public static void validateAwardYear(String premierYear, String awardsAndYear) {
