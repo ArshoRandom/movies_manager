@@ -5,7 +5,7 @@ import auth.Register;
 import exceptions.InvalidCommandException;
 import exceptions.ModelNotFoundException;
 import models.user.User;
-import util.ScannerReader;
+import util.Questionnaire;
 import util.color.Color;
 import util.color.ColorChanger;
 import util.validators.ValidatorUtils;
@@ -14,10 +14,10 @@ import util.validators.ValidatorUtils;
 public class AuthCommandProcessor implements CommandsProcessor {
 
 
-    private ScannerReader scanner;
+    private Questionnaire questionnaire;
 
     public AuthCommandProcessor() {
-        this.scanner = ScannerReader.getInstance();
+        this.questionnaire = Questionnaire.getInstance();
     }
 
     @Override
@@ -32,18 +32,18 @@ public class AuthCommandProcessor implements CommandsProcessor {
         String password;
         switch (commandNumber) {
             case 1:
-                username = scanner.readLine("Enter username");
-                password = scanner.readLine("Enter password");
+                username = questionnaire.askQuestion("Enter username");
+                password = questionnaire.askQuestion("Enter password");
                 Login.login(username, password);
                 ColorChanger.changeColor(Color.GREEN);
                 break;
             case 2:
                 System.out.println();
-                username = scanner.readLine("Enter username");
-                password = scanner.readLine("Enter password");
-                String name = scanner.readLine("Enter name");
-                String surname = scanner.readLine("Enter surname");
-                String email = scanner.readLine("Enter email");
+                username = questionnaire.askQuestion("Enter username");
+                password = questionnaire.askQuestion("Enter password");
+                String name = questionnaire.askQuestion("Enter name");
+                String surname = questionnaire.askQuestion("Enter surname");
+                String email = questionnaire.askQuestion("Enter email");
                 ValidatorUtils.validateProperties(name,surname,username,email,password);
                 User user = new User.Builder()
                         .setUsername(username)

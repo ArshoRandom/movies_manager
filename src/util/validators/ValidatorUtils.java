@@ -1,7 +1,6 @@
 package util.validators;
 
 import exceptions.InvalidPropertyException;
-import util.StringUtils;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -10,9 +9,9 @@ import java.util.regex.Pattern;
 public class ValidatorUtils {
 
     private static boolean isValidEmail(String email) {
-        Pattern VALID_EMAIL_ADDRESS_REGEX =
+        Pattern emailRegexp =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        Matcher matcher = emailRegexp.matcher(email);
         return matcher.find();
     }
 
@@ -41,7 +40,7 @@ public class ValidatorUtils {
         char[] symbols = data.toCharArray();
         if (Character.isLetter(symbols[0]) && Character.isUpperCase(symbols[0])) {
             for (int i = 1; i < symbols.length; i++) {
-                if (!Character.isLetter(symbols[i])) {
+                if (!Character.isLetter(symbols[i]) && Character.isUpperCase(symbols[i])) {
                     return true;
                 }
             }
@@ -67,6 +66,7 @@ public class ValidatorUtils {
         Matcher matcher = pattern.matcher(awardsAndYear);
         premierYear = premierYear.split("\\.")[2];
         while (matcher.find()) {
+            InvalidPropertyException.check(Calendar.getInstance().get(Calendar.YEAR) < Integer.parseInt(matcher.group()), "awarding year must be lesser than current year");
             InvalidPropertyException.check(Integer.parseInt(premierYear) > Integer.parseInt(matcher.group()), "awarding year must be greater than premier year");
         }
 
@@ -78,7 +78,7 @@ public class ValidatorUtils {
         int year = Integer.parseInt(dateChunks[2]);
         int month = Integer.parseInt(dateChunks[1]);
         int day = Integer.parseInt(dateChunks[0]);
-        InvalidPropertyException.check((year > Calendar.getInstance().get(Calendar.YEAR) || year < 1900), "year must be less than current year and greater than 1895");
+        InvalidPropertyException.check((year > Calendar.getInstance().get(Calendar.YEAR) || year < 1900), "year must be less than current year and greater than 1900");
         InvalidPropertyException.check((month > 12 || month <= 0), "incorrect month " + month);
         InvalidPropertyException.check((day > 31 || day <= 0), "incorrect day " + day);
     }
@@ -92,7 +92,7 @@ public class ValidatorUtils {
     }
 
     public static void validateMovieMainMusic(String data){
-        InvalidPropertyException.check(data.trim().length() >= 3,"main music must be contains 3 or more characters");
+        InvalidPropertyException.check(data.trim().length() <= 3,"main music must be contains 3 or more characters");
     }
 
     public static void validateAgeRestriction(int ageRestriction){
@@ -107,7 +107,4 @@ public class ValidatorUtils {
         InvalidPropertyException.check((data.trim().isEmpty()),propName + " could not be empty");
     }
 
-    public static void validateMovieTitle(String data) {
-        InvalidPropertyException.check((data.trim().isEmpty()),"title could not be empty");
-    }
 }

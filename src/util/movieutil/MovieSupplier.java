@@ -7,7 +7,7 @@ import models.movies.MusicFilm;
 import models.movies.SoapOpera;
 import models.movies.base.Movie;
 import models.movies.constants.MovieType;
-import util.ScannerReader;
+import util.Questionnaire;
 import util.StringUtils;
 
 public class MovieSupplier {
@@ -68,10 +68,10 @@ public class MovieSupplier {
 
 
     private static class FieldsFiller {
-        private static ScannerReader scanner;
+        private static Questionnaire questionnaire;
 
         static {
-            scanner = ScannerReader.getInstance();
+            questionnaire = Questionnaire.getInstance();
         }
 
         public static void fillFieldsAndGetValues(MovieType movieType) throws InvalidPropertyException {
@@ -95,18 +95,18 @@ public class MovieSupplier {
 
         private static void getValuesForMusicFilm() {
             getValuesForBaseMovie();
-            MovieSupplier.mainMusic = scanner.readLine("Enter main music");
+            MovieSupplier.mainMusic = questionnaire.askQuestion("Enter main music");
 
         }
 
         private static void getValuesForAnimation() {
             getValuesForBaseMovie();
-            MovieSupplier.isDrawn = scanner.readLine("Enter true if it is drawn, otherwise false");
+            MovieSupplier.isDrawn = questionnaire.askQuestion("Enter true if it is drawn, otherwise false");
         }
 
         private static void getValuesForSoapOpera() {
             getValuesForBaseMovie();
-            MovieSupplier.seriesCount = scanner.readLine("Enter count of series");
+            MovieSupplier.seriesCount = questionnaire.askQuestion("Enter count of series");
         }
 
         private static void getValuesForFeatureFilm() {
@@ -114,12 +114,12 @@ public class MovieSupplier {
         }
 
         private static void getValuesForBaseMovie() {
-            MovieSupplier.title = scanner.readLine("Enter title");
-            MovieSupplier.country = scanner.readLine("Enter country");
-            MovieSupplier.genre = scanner.readLine("Enter genre (example drama,melodrama...)");
-            MovieSupplier.premiereDate = scanner.readLine("Enter premier date (example 21.05.2001)");
-            MovieSupplier.ageRestriction = scanner.readLine("Enter age of restriction");
-            MovieSupplier.awardMap = scanner.readLine("Enter awards (example oscar=[2002, 2004], golden globe=[1998, 1999]...)");
+            MovieSupplier.title = questionnaire.askQuestion("Enter title");
+            MovieSupplier.country = questionnaire.askQuestion("Enter country");
+            MovieSupplier.genre = questionnaire.askQuestion("Enter genre (example drama,melodrama...)");
+            MovieSupplier.premiereDate = questionnaire.askQuestion("Enter premier date (example 21.05.2001)");
+            MovieSupplier.ageRestriction = questionnaire.askQuestion("Enter age of restriction");
+            MovieSupplier.awardMap = questionnaire.askQuestion("Enter awards (example oscar=[2002, 2004], golden globe=[1998, 1999]...)");
         }
 
         private static void clean() {

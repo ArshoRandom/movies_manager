@@ -89,10 +89,17 @@ public class StringUtils {
             yearsMatcher = yearsRegexp.matcher(entry);
             if (awardMatcher.find()){
                 years = new TreeSet<>();
-                while (yearsMatcher.find()){
+                while (yearsMatcher.find()) {
                     years.add(Integer.parseInt(yearsMatcher.group().trim()));
                 }
-                map.put(awardMatcher.group().trim(),years);
+                String awardName = awardMatcher.group().trim();
+                if (map.containsKey(awardName)){
+                    Set<Integer> existsData = map.get(awardName);
+                    existsData.addAll(years);
+                    map.put(awardName,existsData);
+                }else {
+                    map.put(awardMatcher.group().trim(), years);
+                }
             }
         }
         return map;

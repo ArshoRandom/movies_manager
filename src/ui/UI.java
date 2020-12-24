@@ -5,7 +5,7 @@ import exceptions.InvalidPropertyException;
 import exceptions.ModelNotFoundException;
 import ui.processor.AuthCommandProcessor;
 import ui.processor.MainCommandsProcessor;
-import util.ScannerReader;
+import util.Questionnaire;
 import util.cache.MovieCache;
 import util.cache.UserCache;
 import util.color.Color;
@@ -24,13 +24,13 @@ public class UI {
     public static void start() {
         System.out.println(Templates.getWelcomeTemplate());
 
-        ScannerReader scanner = ScannerReader.getInstance();
+        Questionnaire questionnaire = Questionnaire.getInstance();
 
         AuthCommandProcessor authProcessor = new AuthCommandProcessor();
         MainCommandsProcessor movieProcessor = new MainCommandsProcessor();
 
         while (true) {
-            String authCommand = scanner.readLine(Templates.getAuthTemplate());
+            String authCommand = questionnaire.askQuestion(Templates.getAuthTemplate());
             try {
                 authProcessor.processMainCommands(authCommand);
             } catch (InvalidCommandException | ModelNotFoundException | InvalidPropertyException e) {
@@ -50,11 +50,11 @@ public class UI {
         while (inAction) {
 
             ColorChanger.changeColor(Color.GREEN);
-            String command = scanner.readLine(menuTemplate);
+            String command = questionnaire.askQuestion(menuTemplate);
 
             switch (command.toLowerCase()) {
                 case "exit":
-                    String action = scanner.readLine("Do yo want save your movies? (Y/N)");
+                    String action = questionnaire.askQuestion("Do yo want save your movies? (Y/N)");
                     if (action.equalsIgnoreCase("y")){
                         try {
                             movieDataWriter.write(MovieCache.getCache(),String.format("src/resources/%s.txt", UserCache.getCurrentUser().getUsername()));

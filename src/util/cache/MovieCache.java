@@ -1,7 +1,8 @@
 package util.cache;
 
+import exceptions.InvalidCommandException;
 import models.movies.base.AbstractMovie;
-import util.ScannerReader;
+import util.Questionnaire;
 import util.helpers.KeyPair;
 
 import java.util.*;
@@ -13,21 +14,23 @@ public class MovieCache {
 
     private MovieCache(){}
 
-    public static void cache(AbstractMovie movie){
+    public static void cache(AbstractMovie movie) throws InvalidCommandException {
 
         if (cache == null){
             cache = new WeakHashMap<>();
         }
         KeyPair<String,String> keyPair = new KeyPair<>(movie.getTitle().toLowerCase(),movie.getCountry().toLowerCase());
         if (cache.containsKey(keyPair)){
-            String answer = ScannerReader.getInstance().readLine("Movie already exists. Update ? (Y/N)");
+            String answer = Questionnaire.getInstance().askQuestion("Movie already exists. Update ? (Y/N)");
+
             if (answer.equalsIgnoreCase("y")){
-               cache.put(keyPair,movie);
+                cache.put(keyPair, movie);
             }else if (!answer.equalsIgnoreCase("n")){
-                return;
+                throw new InvalidCommandException(answer);
             }
+        }else {
+            cache.put(keyPair, movie);
         }
-        cache.put(keyPair, movie);
     }
 
     public static void setCache(Map<KeyPair, AbstractMovie> movieMap){

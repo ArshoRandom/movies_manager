@@ -16,7 +16,6 @@ public class Templates {
         ColorChanger.changeColor(Color.BLUE);
         return ("\nWelcome to my MovieManager application, for exit enter 'exit'" +
                 "\nFor executing command enter command number." +
-                "\nYou can import movies data from saved files using 'import <path>' " +
                 "\nAfter completing management you can save yor movies data in file" +
                 "\nGood luck!!!");
     }

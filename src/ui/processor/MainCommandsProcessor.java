@@ -6,7 +6,7 @@ import models.movies.base.AbstractMovie;
 import services.MovieService;
 import services.UserService;
 import ui.Templates;
-import util.ScannerReader;
+import util.Questionnaire;
 import util.StringUtils;
 import util.cache.MovieCache;
 import util.cache.UserCache;
@@ -17,20 +17,20 @@ import models.movies.constants.MovieType;
 
 
 public class MainCommandsProcessor implements CommandsProcessor {
-    private ScannerReader scanner;
+    private Questionnaire questionnaire;
 
     public MainCommandsProcessor() {
-        this.scanner = ScannerReader.getInstance();
+        this.questionnaire = Questionnaire.getInstance();
     }
 
     public void processMainCommands(String command) throws InvalidCommandException, NumberFormatException {
 
-        if (!command.matches("[1-7]")) {
+        if (!command.matches("[1-8]")) {
             throw new InvalidCommandException(command);
         }
         int commandNumber = Integer.parseInt(command);
 
-        if (MovieCache.getCache().isEmpty() && commandNumber != 1) {
+        if (MovieCache.getCache().isEmpty() && (commandNumber != 1 && commandNumber != 7)) { // '1' for adding new film and '7' for printing user info
             System.err.println("At first add movies");
             return;
         }
@@ -38,7 +38,7 @@ public class MainCommandsProcessor implements CommandsProcessor {
         switch (commandNumber) {
             case 1:
 
-                int typeNumber = Integer.parseInt(scanner.readLine(Templates.getMovieTypeMenu()));
+                int typeNumber = Integer.parseInt(questionnaire.askQuestion(Templates.getMovieTypeMenu()));
                 processMovieCreation(typeNumber);
                 ColorChanger.changeColor(Color.GREEN);
                 break;
@@ -46,11 +46,11 @@ public class MainCommandsProcessor implements CommandsProcessor {
                 MovieService.printAllFilms(MovieCache.getCache());
                 break;
             case 3:
-                int age = Integer.parseInt(scanner.readLine("Enter age"));
+                int age = Integer.parseInt(questionnaire.askQuestion("Enter age"));
                 MovieService.printAllFilmsByAgeRestriction(MovieCache.getCache(),age);
                 break;
             case 4:
-                String genres = scanner.readLine("Enter genres (drama,melodrama...)");
+                String genres = questionnaire.askQuestion("Enter genres (drama,melodrama...)");
                 MovieService.printAllFilmsByGenre(MovieCache.getCache(), StringUtils.mapStringToGenreSet(genres));
                 break;
             case 5:
@@ -125,8 +125,8 @@ public class MainCommandsProcessor implements CommandsProcessor {
     private  class Question{
 
         private  <T extends AbstractMovie> T  getMovieByQuestion() throws ModelNotFoundException {
-            String title = scanner.readLine("Enter movie name");
-            String country = scanner.readLine("Enter movie country");
+            String title = questionnaire.askQuestion("Enter movie name");
+            String country = questionnaire.askQuestion("Enter movie country");
             return MovieService.search(title,country);
         }
     }
