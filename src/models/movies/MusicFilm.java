@@ -27,6 +27,6 @@ public class MusicFilm extends FeatureFilm {
     @Override
     public String toString() {
         String data = super.toString();
-        return data + " , " + this.mainMusic;
+        return data + "|" + this.mainMusic;
     }
 }

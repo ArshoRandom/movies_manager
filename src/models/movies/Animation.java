@@ -31,6 +31,6 @@ public class Animation extends AbstractMovie {
     @Override
     public String toString() {
         String data = super.toString();
-        return data + " , " + this.isDrawn;
+        return data + "|" + this.isDrawn;
     }
 }

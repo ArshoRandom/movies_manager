@@ -17,7 +17,7 @@ public class MovieMapper implements Mapper<KeyPair,AbstractMovie> {
         for(String raw : uniqRaw){
             String[] dataParts = raw.split(" : ");
             String type = dataParts[0];
-            Map<String, String> properties = StringUtils.propertyArrayToMap(dataParts[1].split(" , "));
+            Map<String, String> properties = StringUtils.propertyArrayToMap(dataParts[1].split("\\|"));
             AbstractMovie movie;
             switch (type){
                 case "FEATURE_FILM":

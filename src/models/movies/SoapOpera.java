@@ -30,6 +30,6 @@ public class SoapOpera extends AbstractMovie {
     @Override
     public String toString() {
         String data = super.toString();
-        return data + " , " + this.seriesCount;
+        return data + "|" + this.seriesCount;
     }
 }

@@ -107,7 +107,7 @@ public abstract class AbstractMovie implements Movie {
     @Override
     public String toString() {
         String simpleDate = StringUtils.formatDateToString(this.premiereDate);
-        return String.format("%s : %s , %s , %d , %s , %s , %s",
+        return String.format("%s : %s|%s|%d|%s|%s|%s",
                 this.type.name(),
                 this.title,
                 this.country,

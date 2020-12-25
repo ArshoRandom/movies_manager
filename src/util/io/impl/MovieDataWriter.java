@@ -1,10 +1,8 @@
 package util.io.impl;
 
 import models.movies.base.AbstractMovie;
-import util.cache.UserCache;
 import util.io.Writer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-    private StringUtils(){}
+    private StringUtils() {
+    }
 
     public static String capitalize(String str) {
         str = str.trim();
@@ -62,17 +63,17 @@ public class StringUtils {
         }
     }
 
-    public static Set<Genre> mapStringToGenreSet(String formattedData){
+    public static Set<Genre> mapStringToGenreSet(String formattedData) {
         Pattern genresRegexp = Pattern.compile("[a-zA-Z]+");
         Matcher genresMatcher = genresRegexp.matcher(formattedData);
         Set<Genre> genres = new HashSet<>();
-        while (genresMatcher.find()){
+        while (genresMatcher.find()) {
             genres.add(getGenreByStr(genresMatcher.group()));
         }
         return genres;
     }
 
-    public static Map<String, Set<Integer>> mapStringToAwardMap(String strMap){
+    public static Map<String, Set<Integer>> mapStringToAwardMap(String strMap) {
         Map<String, Set<Integer>> map = new HashMap<>();
 
         Pattern entryRegexp = Pattern.compile("[a-zA-Z\\s]+\\s?=\\s?\\[(\\d{4}\\s?,?\\s?)+]");
@@ -85,21 +86,21 @@ public class StringUtils {
         Matcher yearsMatcher;
         Set<Integer> years;
 
-        while (entryMatcher.find()){
+        while (entryMatcher.find()) {
             String entry = entryMatcher.group();
             awardMatcher = awardsRegexp.matcher(entry);
             yearsMatcher = yearsRegexp.matcher(entry);
-            if (awardMatcher.find()){
+            if (awardMatcher.find()) {
                 years = new TreeSet<>();
                 while (yearsMatcher.find()) {
                     years.add(Integer.parseInt(yearsMatcher.group().trim()));
                 }
                 String awardName = awardMatcher.group().trim();
-                if (map.containsKey(awardName)){
+                if (map.containsKey(awardName)) {
                     Set<Integer> existsData = map.get(awardName);
                     existsData.addAll(years);
-                    map.put(awardName,existsData);
-                }else {
+                    map.put(awardName, existsData);
+                } else {
                     map.put(awardMatcher.group().trim(), years);
                 }
             }
@@ -108,21 +109,21 @@ public class StringUtils {
     }
 
 
-    public static String formatDateToString(Date premiereDate){
+    public static String formatDateToString(Date premiereDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         return dateFormat.format(premiereDate);
     }
 
-    public static Map<String,String> propertyArrayToMap(String... array){
-        Map<String,String> properties = new HashMap<>(array.length);
-        properties.put("title",array[0]);
-        properties.put("country",array[1]);
-        properties.put("ageRestriction",array[2]);
-        properties.put("genre",array[3]);
-        properties.put("premiereDate",array[4]);
-        properties.put("awardMap",array[5]);
+    public static Map<String, String> propertyArrayToMap(String... array) {
+        Map<String, String> properties = new HashMap<>(array.length);
+        properties.put("title", array[0].trim());
+        properties.put("country", array[1].trim());
+        properties.put("ageRestriction", array[2].trim());
+        properties.put("genre", array[3].trim());
+        properties.put("premiereDate", array[4].trim());
+        properties.put("awardMap", array[5].trim());
         if (array.length > 6) {
-            properties.put("optional", array[6]);
+            properties.put("optional", array[6].trim());
         }
         return properties;
     }
