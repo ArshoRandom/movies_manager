@@ -9,7 +9,13 @@ import models.movies.base.Movie;
 import models.movies.constants.MovieType;
 import util.Questionnaire;
 import util.StringUtils;
-
+/**
+ * Class is for interactive {@link Movie} instance creation using console
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
 public class MovieSupplier {
 
     private static String title;
@@ -24,6 +30,13 @@ public class MovieSupplier {
 
     private MovieSupplier(){}
 
+    /**
+     * Returns the new {@link Movie} object by category
+     * @param type return object category
+     * @param <T> type of movie
+     * @return movie object
+     * @exception RuntimeException if category is invalid
+     */
     public static <T extends Movie> T getMovieByType(MovieType type) {
         switch (type) {
             case FEATURE_FILM:
@@ -38,6 +51,10 @@ public class MovieSupplier {
         throw new RuntimeException("Invalid film type");
     }
 
+    /**
+     * Returns {@link MusicFilm} instance
+     * @return {@link MusicFilm} instance
+     */
     private static MusicFilm getMusicFilm() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.MUSIC_FILM);
         MusicFilm musicFilm = MovieFactory.createMovie(MovieType.MUSIC_FILM, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap, mainMusic));
@@ -46,6 +63,10 @@ public class MovieSupplier {
 
     }
 
+    /**
+     * Returns {@link Animation} instance
+     * @return {@link Animation} instance
+     */
     private static Animation getAnimation() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.ANIMATION);
         Animation animation = MovieFactory.createMovie(MovieType.ANIMATION, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap, isDrawn));
@@ -53,6 +74,10 @@ public class MovieSupplier {
         return animation;
     }
 
+    /**
+     * Returns {@link FeatureFilm} instance
+     * @return {@link FeatureFilm} instance
+     */
     private static FeatureFilm getFeatureFilm() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.FEATURE_FILM);
         FeatureFilm featureFilm = MovieFactory.createMovie(MovieType.FEATURE_FILM, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap));
@@ -60,6 +85,10 @@ public class MovieSupplier {
         return featureFilm;
     }
 
+    /**
+     * Returns {@link SoapOpera} instance
+     * @return {@link SoapOpera} instance
+     */
     private static SoapOpera getSoapOpera() {
         FieldsFiller.fillFieldsAndGetValues(MovieType.SOAP_OPERA);
         SoapOpera soapOpera = MovieFactory.createMovie(MovieType.SOAP_OPERA, StringUtils.propertyArrayToMap(title, country, ageRestriction, genre, premiereDate, awardMap, seriesCount));
@@ -67,8 +96,13 @@ public class MovieSupplier {
         return soapOpera;
     }
 
-
-
+    /**
+     * In class methods are presented for reading console input and filling fields for movie instances creation
+     * @author Arshak Papoyan
+     * @version 1.0
+     * @since 25.12.2020
+     * @see Questionnaire
+     */
     private static class FieldsFiller {
         private static Questionnaire questionnaire;
 
@@ -76,6 +110,11 @@ public class MovieSupplier {
             questionnaire = Questionnaire.getInstance();
         }
 
+        /**
+         * Method can read from console and fill fields for {@link Movie} by the category
+         * @param movieType target movie category
+         * @throws InvalidPropertyException if user entered invalid value
+         */
         public static void fillFieldsAndGetValues(MovieType movieType) throws InvalidPropertyException {
             switch (movieType) {
                 case SOAP_OPERA:
@@ -95,26 +134,41 @@ public class MovieSupplier {
             }
         }
 
+        /**
+         * Fill special fields for {@link models.movies.MusicFilm} using {@link Questionnaire}
+         */
         private static void getValuesForMusicFilm() {
             getValuesForBaseMovie();
             MovieSupplier.mainMusic = questionnaire.askQuestion("Enter main music");
 
         }
 
+        /**
+         * Fill special fields for {@link models.movies.Animation} using {@link Questionnaire}
+         */
         private static void getValuesForAnimation() {
             getValuesForBaseMovie();
             MovieSupplier.isDrawn = questionnaire.askQuestion("Enter true if it is drawn, otherwise false");
         }
 
+        /**
+         * Fill special fields for {@link models.movies.SoapOpera} using {@link Questionnaire}
+         */
         private static void getValuesForSoapOpera() {
             getValuesForBaseMovie();
             MovieSupplier.seriesCount = questionnaire.askQuestion("Enter count of series");
         }
 
+        /**
+         * Fill special fields for {@link models.movies.FeatureFilm} using {@link Questionnaire}
+         */
         private static void getValuesForFeatureFilm() {
             getValuesForBaseMovie();
         }
 
+        /**
+         * Fill special fields for {@link models.movies.base.AbstractMovie} using {@link Questionnaire}
+         */
         private static void getValuesForBaseMovie() {
             MovieSupplier.title = questionnaire.askQuestion("Enter title");
             MovieSupplier.country = questionnaire.askQuestion("Enter country");
@@ -124,6 +178,9 @@ public class MovieSupplier {
             MovieSupplier.awardMap = questionnaire.askQuestion("Enter awards (example oscar=[2002, 2004], golden globe=[1998, 1999]...)");
         }
 
+        /**
+         * Cleans old values and prepares fields for further use
+         */
         private static void clean() {
             MovieSupplier.title = null;
             MovieSupplier.country = null;

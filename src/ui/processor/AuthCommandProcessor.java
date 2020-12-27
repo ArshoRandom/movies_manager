@@ -10,7 +10,18 @@ import util.color.Color;
 import util.color.ColorChanger;
 import util.validators.ValidatorUtils;
 
-
+/**
+ * Process authentication commands
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ * @see CommandsProcessor
+ * @see Questionnaire
+ * @see Login
+ * @see Register
+ * @see User
+ */
 public class AuthCommandProcessor implements CommandsProcessor {
 
 
@@ -20,6 +31,13 @@ public class AuthCommandProcessor implements CommandsProcessor {
         this.questionnaire = Questionnaire.getInstance();
     }
 
+    /**
+     * Process {@link User} instance creation with login or register
+     * @param command user command number
+     * @throws InvalidCommandException if command is invalid
+     * @throws NumberFormatException if command not a number
+     * @throws ModelNotFoundException if logged in {@link User} not found
+     */
     @Override
     public void processMainCommands(String command) throws InvalidCommandException, NumberFormatException, ModelNotFoundException {
 

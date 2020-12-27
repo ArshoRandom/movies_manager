@@ -2,7 +2,13 @@ package ui;
 
 import util.color.Color;
 import util.color.ColorChanger;
-
+/**
+ * In the class methods returning menu templates are presented
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
 public class Templates {
 
     private Templates(){}

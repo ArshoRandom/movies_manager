@@ -1,7 +1,14 @@
 package exceptions;
+/**
+ * Signals that  data is invalid or not formatted.
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
+public class InvalidDataFormatException extends RuntimeException{
 
-public class InvalidDataFormatException extends Exception{
-    public InvalidDataFormatException(String message) {
-        super("Invalid or corrupted file : " + message + " is not valid");
+    public InvalidDataFormatException(Throwable cause) {
+        super(cause);
     }
 }

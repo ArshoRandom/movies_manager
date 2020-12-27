@@ -1,5 +1,11 @@
 package exceptions;
-
+/**
+ * Signals that a property is invalid.
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
 public class InvalidPropertyException extends RuntimeException {
 
     public InvalidPropertyException(String message) {

@@ -1,14 +1,32 @@
 package util.mapper;
 
 import models.movies.base.AbstractMovie;
+import models.movies.constants.MovieType;
 import util.StringUtils;
 import util.helpers.KeyPair;
 import util.movieutil.MovieFactory;
-import models.movies.constants.MovieType;
 
 import java.util.*;
-
+/**
+ *
+ * Class is for mapping string data to {@link models.movies.base.Movie} instances
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ * @see Mapper
+ * @see KeyPair
+ * @see models.movies.base.Movie
+ */
 public class MovieMapper implements Mapper<KeyPair,AbstractMovie> {
+
+
+    /**
+     * This method maps {@link List} of string values to {@link java.util.Map} where as a key {@link KeyPair} instance is used,
+     * and as a value {@link models.movies.base.Movie} instance is used
+     * @param rawData list of string data
+     * @return {@link Map} of {@link models.movies.base.Movie}
+     */
 
     @Override
     public Map<KeyPair,AbstractMovie> map(List<String> rawData) {

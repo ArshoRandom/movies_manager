@@ -12,11 +12,33 @@ import util.validators.ValidatorUtils;
 
 import java.util.Map;
 import java.util.Set;
-
+/**
+ *
+ * Class is for {@link models.movies.base.Movie} creation using Factory pattern
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ * @see MovieSupplier
+ * @see ValidatorUtils
+ * @see SoapOpera
+ * @see FeatureFilm
+ * @see Animation
+ * @see MusicFilm
+ */
 public class MovieFactory {
 
     private MovieFactory(){}
 
+
+    /**
+     * Returns the instance or {@link models.movies.base.Movie} by the category
+     * @param type creating instance category
+     * @param properties creating instance fields values
+     * @param <T> creating instance type
+     * @return new instance of {@link models.movies.base.Movie}
+     * @exception RuntimeException if category is invalid
+     */
     public static <T extends AbstractMovie> T createMovie(MovieType type, Map<String,String> properties){
         String title = properties.get("title");
         String country = properties.get("country");
@@ -27,7 +49,7 @@ public class MovieFactory {
 
         ValidatorUtils.isEmpty(title,"title");
         ValidatorUtils.isEmpty(genre,"genre");
-        ValidatorUtils.validateMovieCreatorCountry(country);
+        ValidatorUtils.validateMovieProducerCountry(country);
         ValidatorUtils.validateMoviePremierDate(premiereDate);
         ValidatorUtils.validateAwardYear(premiereDate,properties.get("awardMap"));
         Set<Genre> genres = StringUtils.mapStringToGenreSet(genre);

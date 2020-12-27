@@ -8,13 +8,20 @@ import ui.processor.AuthCommandProcessor;
 import ui.processor.MainCommandsProcessor;
 import util.Questionnaire;
 import util.cache.MovieCache;
-import util.cache.UserCache;
+import util.cache.Session;
 import util.color.Color;
 import util.color.ColorChanger;
 import util.io.impl.MovieDataWriter;
 
 import java.io.IOException;
-
+/**
+ *
+ * Class is for processing user interface
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
 public class UI {
 
     private UI(){}
@@ -24,6 +31,9 @@ public class UI {
         movieDataWriter = new MovieDataWriter();
     }
 
+    /**
+     * Application start point-method
+     */
     public static void start() {
         System.out.println(Templates.getWelcomeTemplate());
 
@@ -60,7 +70,7 @@ public class UI {
                     String action = questionnaire.askQuestion("Do yo want save your movies? (Y/N)");
                     if (action.equalsIgnoreCase("y")){
                         try {
-                            movieDataWriter.write(MovieCache.getCache(), AppConfig.getMoviesDataPathFor(UserCache.getCurrentUser().getUsername()));
+                            movieDataWriter.write(MovieCache.getCache(), AppConfig.getMoviesDataPathFor(Session.getCurrentUser().getUsername()));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -80,7 +90,6 @@ public class UI {
                         turnOnSecondaryMenu = false;
                         continue outer;
                     }
-
             }
 
             try {

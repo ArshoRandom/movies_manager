@@ -10,12 +10,23 @@ import ui.Templates;
 import util.Questionnaire;
 import util.StringUtils;
 import util.cache.MovieCache;
-import util.cache.UserCache;
+import util.cache.Session;
 import util.color.Color;
 import util.color.ColorChanger;
 import util.movieutil.MovieSupplier;
 
-
+/**
+ *
+ * Process main application commands
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ * @see CommandsProcessor
+ * @see Questionnaire
+ * @see MovieService
+ * @see MovieCache
+ */
 public class MainCommandsProcessor implements CommandsProcessor {
     private Questionnaire questionnaire;
 
@@ -23,6 +34,15 @@ public class MainCommandsProcessor implements CommandsProcessor {
         this.questionnaire = Questionnaire.getInstance();
     }
 
+
+    /**
+     *
+     * Process commands imputed by the user
+     * command must be number
+     * @param command user command number
+     * @throws InvalidCommandException if command is invalid
+     * @throws NumberFormatException if command is not a number
+     */
     public void processMainCommands(String command) throws InvalidCommandException, NumberFormatException {
 
         if (!command.matches("[1-8]")) {
@@ -60,7 +80,7 @@ public class MainCommandsProcessor implements CommandsProcessor {
                 MovieService.printAllOscarWinningFilms(MovieCache.getCache());
                 break;
             case 7:
-                UserService.printUserInfo(UserCache.getCurrentUser());
+                UserService.printUserInfo(Session.getCurrentUser());
                 break;
             default:
                 throw new InvalidCommandException(command);
@@ -68,6 +88,11 @@ public class MainCommandsProcessor implements CommandsProcessor {
 
     }
 
+    /**
+     * Create and add {@link AbstractMovie} in movie cache
+     * @param typeNumber command number
+     * @throws InvalidCommandException if command is invalid
+     */
     private void processMovieCreation(int typeNumber) throws InvalidCommandException {
         try {
             switch (typeNumber) {
@@ -93,7 +118,13 @@ public class MainCommandsProcessor implements CommandsProcessor {
         }
     }
 
-
+    /**
+     * Process sub commands imputed by the user
+     * command must be number
+     * @param command user command number
+     * @throws InvalidCommandException if command is invalid
+     * @throws NumberFormatException if command is not a number
+     */
     public void processSubCommands(String command) throws InvalidCommandException, NumberFormatException {
         int commandNumber = Integer.parseInt(command.trim());
         if (!(commandNumber > 0 && commandNumber < 6)) {
@@ -122,6 +153,9 @@ public class MainCommandsProcessor implements CommandsProcessor {
         }
     }
 
+    /**
+     * Helper class for excluding code duplicates
+     */
     private class Question {
 
         private <T extends AbstractMovie> T getMovieByQuestion() throws ModelNotFoundException {

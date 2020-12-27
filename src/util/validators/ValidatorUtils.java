@@ -6,11 +6,22 @@ import exceptions.InvalidUserDataException;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * In class validators are presented for general use cases
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
 public class ValidatorUtils {
 
     private ValidatorUtils(){}
 
+    /**
+     * Returns {@code true} if email is valid , otherwise returns {@code false}
+     * @param email data for validation
+     * @return {@code true} if email is valid
+     */
     private static boolean isValidEmail(String email) {
         Pattern emailRegexp =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -18,24 +29,25 @@ public class ValidatorUtils {
         return matcher.find();
     }
 
+    /**
+     * Returns {@code true} if length of password bigger than 8 and password consist of at least 3 numbers
+     * and least 2 uppercase letters
+     * @param password data for validation
+     * @return {@code true} if password is valid
+     */
+
     private static boolean isValidPassword(String password) {
-        if (password.length() < 8) {
-            return false;
-        }
-        int upperCaseCount = 0;
-        int numberCount = 0;
-
-        for (char symbol : password.toCharArray()) {
-            if (Character.isDigit(symbol)) {
-                numberCount++;
-            } else if (Character.isLetter(symbol) && Character.isUpperCase(symbol)) {
-                upperCaseCount++;
-            }
-        }
-        return upperCaseCount >= 2 && numberCount >= 3;
-
+        Pattern  passwordPattern = Pattern.compile("^(?=.*[0-9]{3,})(?=.*[A-Z]{2,}).{8,}$");
+        Matcher matcher = passwordPattern.matcher(password);
+        return matcher.matches();
     }
 
+    /**
+     * Returns {@code true} if data starts with uppercase letter and continues with lowercase letters
+     * and contains only letters
+     * @param data data for validation
+     * @return {@code true} if data is valid
+     */
     private static boolean isValidPersonalData(String data) {
         if (data.trim().length() <= 1) {
             return false;
@@ -52,6 +64,11 @@ public class ValidatorUtils {
         return false;
     }
 
+    /**
+     * Returns {@code true} if username length is bigger than 10 and contains only digits and letters
+     * @param username data for validation
+     * @return {@code true} if data is valid
+     */
     private static boolean isValidUsername(String username) {
         if (username.trim().length() < 10) {
             return false;
@@ -61,6 +78,15 @@ public class ValidatorUtils {
         return matcher.matches();
     }
 
+    /**
+     * Validate all user properties
+     * @exception InvalidPropertyException if property is invalid
+     * @param name name property
+     * @param surname surname property
+     * @param username username property
+     * @param email email property
+     * @param password password property
+     */
     public static void validateProperties(String name, String surname, String username, String email, String password) {
         InvalidUserDataException.check(!isValidPersonalData(name), name + " : name must be starts with uppercase and must have length greater than 1");
         InvalidUserDataException.check(!isValidPersonalData(surname), surname + " : surname must be starts with uppercase and must have length greater than 1");
@@ -69,6 +95,13 @@ public class ValidatorUtils {
         InvalidUserDataException.check(!isValidPassword(password), "password must contain 2 or more uppercase letter and 3 or more numbers");
     }
 
+
+    /**
+     * Compare awarding years with premier year , if awarding year is invalid than it is ignored
+     * @exception InvalidPropertyException if awarding year is before premier year
+     * @param premierYear movie premier year
+     * @param awardsAndYear movie awarding year
+     */
     public static void validateAwardYear(String premierYear, String awardsAndYear) {
         Pattern pattern = Pattern.compile("\\d{4}");
         Matcher matcher = pattern.matcher(awardsAndYear);
@@ -80,6 +113,11 @@ public class ValidatorUtils {
 
     }
 
+    /**
+     * Validate movie date, with dd.MM.yyyy format
+     * @exception InvalidPropertyException if month, year or day is invalid
+     * @param date data for validation
+     */
     public static void validateMoviePremierDate(String date){
         InvalidPropertyException.check(!date.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{4}"), "use format dd.MM.yyyy");
         String[] dateChunks = date.split("\\.");
@@ -91,7 +129,12 @@ public class ValidatorUtils {
         InvalidPropertyException.check((day > 31 || day <= 0), "incorrect day " + day);
     }
 
-    public static void validateMovieCreatorCountry(String data){
+    /**
+     * Validate movie producer country
+     * @exception  InvalidPropertyException if data is empty or contains not letter symbols
+     * @param data data for validation
+     */
+    public static void validateMovieProducerCountry(String data){
         InvalidPropertyException.check((data.trim().isEmpty()),"country could not be empty");
         char[] symbols = data.toCharArray();
         for (char symbol : symbols) {
@@ -99,18 +142,39 @@ public class ValidatorUtils {
         }
     }
 
+    /**
+     * Validate movie producer country
+     * @exception  InvalidPropertyException if data is empty or contains not letter symbols
+     * @param data data for validation
+     */
     public static void validateMovieMainMusic(String data){
         InvalidPropertyException.check(data.trim().length() <= 3,"main music must be contains 3 or more characters");
     }
 
+    /**
+     * Validate movie age of restriction
+     * @exception  InvalidPropertyException if age more than 25 or is negative or 0
+     * @param ageRestriction data for validation
+     */
     public static void validateAgeRestriction(int ageRestriction){
         InvalidPropertyException.check((ageRestriction > 25 || ageRestriction < 0), "age must be less than 25 and positive");
     }
+
+    /**
+     * Validate animation age of restriction
+     * @exception  InvalidPropertyException if age more than 16 or is negative or 0
+     * @param ageRestriction data for validation
+     */
     public static void validateAnimationAgeRestriction(int ageRestriction){
         InvalidPropertyException.check((ageRestriction > 16 || ageRestriction < 0),"age must be less than 16 and positive");
     }
 
-
+    /**
+     * checks if property is empty
+     * @exception  InvalidPropertyException if data is empty
+     * @param data data for validation
+     * @param  propName property name for message
+     */
     public static void isEmpty(String data, String propName) {
         InvalidPropertyException.check((data.trim().isEmpty()),propName + " could not be empty");
     }

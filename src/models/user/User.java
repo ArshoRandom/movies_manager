@@ -1,11 +1,15 @@
 package models.user;
 
-import exceptions.InvalidPropertyException;
 import util.digest.DigestUtils;
-import util.validators.ValidatorUtils;
 
 import java.util.Objects;
-
+/**
+ *
+ *
+ * @author  Arshak Papoyan
+ * @version 1.0
+ * @since   25.12.2020
+ */
 public class User {
 
     private String name;
