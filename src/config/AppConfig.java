@@ -52,6 +52,7 @@ public class AppConfig {
 
             Path dbMoviesPath = Paths.get(String.join(File.separator,"src" ,"resources","database","movies"));
             Path dbUsersPath = Paths.get(String.join(File.separator,"src" ,"resources","database","users"));
+
             if (Files.notExists(dbMoviesPath)){
                 Files.createDirectories(dbMoviesPath);
             }
