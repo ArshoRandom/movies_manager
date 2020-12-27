@@ -3,6 +3,8 @@ package config;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -47,6 +49,16 @@ public class AppConfig {
             properties.load(reader);
             userDataPath = getUniversalPath(properties.getProperty("path.user"));
             moviesDataPath = getUniversalPath(properties.getProperty("path.movies"));
+
+            Path dbMoviesPath = Paths.get(String.join(File.separator,"src" ,"resources","database","movies"));
+            Path dbUsersPath = Paths.get(String.join(File.separator,"src" ,"resources","database","users"));
+            if (Files.notExists(dbMoviesPath)){
+                Files.createDirectories(dbMoviesPath);
+            }
+            if (Files.notExists(dbUsersPath)){
+                Files.createDirectories(dbUsersPath);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
