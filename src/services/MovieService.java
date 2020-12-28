@@ -145,6 +145,18 @@ public class MovieService {
     }
 
     /**
+     * Remove {@link AbstractMovie} instance from cache
+     * @param title movie title
+     * @param country movie country
+     * @throws ModelNotFoundException if {@link AbstractMovie} instance doesn't exists
+     */
+    public static void deleteMovie(String title,String country) throws ModelNotFoundException {
+        if (!MovieCache.delete(title, country)){
+            throw new ModelNotFoundException(title);
+        }
+        System.out.println("Movie is successfully removed");
+    }
+    /**
      * Searches and returns corresponding {@link AbstractMovie} by title and produces country from {@link MovieCache}
      * @param title movie title for search
      * @param country produce country for search

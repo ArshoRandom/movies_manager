@@ -67,7 +67,7 @@ public class UI {
 
             switch (command.toLowerCase()) {
                 case "exit":
-                    String action = questionnaire.askQuestion("Do yo want save your movies? (Y/N)");
+                    String action = questionnaire.askQuestion("Do yo want save your changes? (Y/N)");
                     if (action.equalsIgnoreCase("y")){
                         try {
                             movieDataWriter.write(MovieCache.getCache(), AppConfig.getMoviesDataPathFor(Session.getCurrentUser().getUsername()));
@@ -84,7 +84,7 @@ public class UI {
                     menuTemplate = Templates.getSubMenuTemplate();
                     turnOnSecondaryMenu = true;
                     continue outer;
-                case "5": // turn of secondary menu
+                case "6": // turn of secondary menu
                     if (turnOnSecondaryMenu) {
                         menuTemplate = Templates.getMainMenuTemplate();
                         turnOnSecondaryMenu = false;

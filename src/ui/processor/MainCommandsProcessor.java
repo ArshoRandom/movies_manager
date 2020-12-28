@@ -127,7 +127,7 @@ public class MainCommandsProcessor implements CommandsProcessor {
      */
     public void processSubCommands(String command) throws InvalidCommandException, NumberFormatException {
         int commandNumber = Integer.parseInt(command.trim());
-        if (!(commandNumber > 0 && commandNumber < 6)) {
+        if (!(commandNumber > 0 && commandNumber < 7)) {
             throw new InvalidCommandException(String.valueOf(commandNumber));
         }
         Question question = new Question();
@@ -144,6 +144,10 @@ public class MainCommandsProcessor implements CommandsProcessor {
                     break;
                 case 4:
                     MovieService.printFilmRating(question.getMovieByQuestion());
+                    break;
+                case 5:
+                    MovieService.deleteMovie(questionnaire.askQuestion("Enter movie name")
+                            ,questionnaire.askQuestion("Enter movie country"));
                     break;
                 default:
                     throw new InvalidCommandException(command);

@@ -46,7 +46,8 @@ public class Templates {
                 "\n2. Print movie awards" +
                 "\n3. Print movie age" +
                 "\n4. Print movie rating" +
-                "\n5. Back to main menu";
+                "\n5. Remove movie" +
+                "\n6. Back to main menu";
     }
 
     public static String getMovieTypeMenu() {

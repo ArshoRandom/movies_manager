@@ -79,4 +79,16 @@ public class MovieCache {
         KeyPair<String,String> key = new KeyPair<>(title.toLowerCase(),country.toLowerCase());
         return (T) cache.get(key);
     }
+
+    /**
+     * Returns {@code true} if {@link AbstractMovie} successfully deleted from cache
+     * @param title movie title
+     * @param country movie country
+     * @return true if movie successfully deleted
+     */
+    public static boolean delete(String title, String country){
+        KeyPair<String,String> key = new KeyPair<>(title.toLowerCase(),country.toLowerCase());
+        AbstractMovie remove = cache.remove(key);
+        return Objects.nonNull(remove);
+    }
 }
